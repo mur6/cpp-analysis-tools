@@ -1,20 +1,25 @@
 # Valgrind
 メモリデバッグや、メモリリークの検出、スレッドエラーの検出、プロファイリングなどを行うための、仮想機械を利用したツール.
 
-## 環境構築
+## 環境構築とコンテナの起動
 下記のコマンドにて、docker上のテスト環境をビルドする。
 ```
-$ docker build -t valgrind-test .
+docker build -t valgrind-test .
 ```
 
-## サンプルプログラムのビルド
-サンプルプログラムのビルドと、動作確認。
+下記のコマンドにて、コンテナを起動して下さい。
 ```
-# g++ main.cpp -pg -o main
-# ./main
-Hello, world.
+docker run -it --rm -v "$PWD":/src --name valgrind-env valgrind-test
 ```
 
+## プログラムのビルドと実行
+コンテナ内にて、プログラムのビルド及びvalgrindによるプロファイリングを実行して下さい。
+```
+root@ca9ac5980dcc:/# cd /src
+root@ca9ac5980dcc:/src# g++ -std=c++11 main.cpp -o main
+root@ca9ac5980dcc:/src# valgrind --tool=callgrind ./main
+root@ca9ac5980dcc:/src# exit
+```
 
 
 ## 参考サイト
